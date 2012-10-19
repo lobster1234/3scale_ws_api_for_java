@@ -1,10 +1,12 @@
 *~
 out
 build
-
 threescale_api.iws
 api.tmproj
 target/*
 lib/.DS_Store
 .DS_Store
-
+#For Eclipse
+.settings/
+.project
+.classpath
