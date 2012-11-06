@@ -62,11 +62,11 @@ public class Api2Impl implements Api2 {
      * @return AuthorizeResponse containing the current usage metrics.
      * @throws ApiException if there is an error connection to the server
      */
-    public AuthorizeResponse authorize(String app_id, String app_key, String referrer, HashMap<String, String> usage_metrics) throws ApiException {
+    public AuthorizeResponse authorize(String app_id, String app_key, String referrer, HashMap<String, String> usage_metrics, boolean trackUsage) throws ApiException {
 
         AuthorizeResponse cached_response = cache.getAuthorizeFor(app_id, app_key, referrer, null, usage_metrics);
         if (cached_response == null) {
-            String url = formatGetUrl(app_id, app_key, referrer, null, usage_metrics);
+            String url = formatGetUrl(app_id, app_key, referrer, null, usage_metrics,trackUsage);
             log.info("Sending GET to sever with url: " + url);
 
             ApiHttpResponse response = sender.sendGetToServer(url);
@@ -95,13 +95,13 @@ public class Api2Impl implements Api2 {
      * @return AuthorizeResponse containing the current usage metrics.
      * @throws ApiException if there is an error connection to the server
      */
-    public AuthorizeResponse authorizeWithUserKey(String user_key, String referrer, HashMap<String, String> usage_metrics) throws ApiException {
+    public AuthorizeResponse authorizeWithUserKey(String user_key, String referrer, HashMap<String, String> usage_metrics, boolean trackUsage) throws ApiException {
 
         String app_key = null; // Should always be null
         
         AuthorizeResponse cached_response = cache.getAuthorizeFor(null, app_key, referrer, user_key, usage_metrics);
         if (cached_response == null) {
-            String url = formatGetUrl(null, app_key, referrer, user_key, usage_metrics);
+            String url = formatGetUrl(null, app_key, referrer, user_key, usage_metrics,trackUsage);
             log.info("Sending GET to sever with url: " + url);
 
             ApiHttpResponse response = sender.sendGetToServer(url);
@@ -125,7 +125,7 @@ public class Api2Impl implements Api2 {
 
     @Override
     public AuthorizeResponse authorize(String app_id, String app_key, String referrer) throws ApiException {
-        return authorize(app_id, app_key, referrer, null);
+        return authorize(app_id, app_key, referrer, null,false);
     }
 
     /**
@@ -147,13 +147,20 @@ public class Api2Impl implements Api2 {
 
 // Private Methods
 
-    private String formatGetUrl(String app_id, String app_key, String referrer, String user_key, HashMap<String, String> usage) {
+    private String formatGetUrl(String app_id, String app_key, String referrer, String user_key, HashMap<String, String> usage, boolean trackUsage) {
         StringBuffer url = new StringBuffer();
-
+        if(!trackUsage)
         url.append(host_url)
                 .append("/transactions/authorize.xml")
                 .append("?provider_key=")
                 .append(provider_key);
+        else {
+        	url.append(host_url).append("/transactions/authrep.xml")
+        		.append("?provider_key=")
+        		.append(provider_key);
+        	if(usage==null || usage.isEmpty()) url.append("&usage[hits]=1");
+        }
+        
         if (app_id != null) {
             url.append("&app_id=").append(app_id);
 

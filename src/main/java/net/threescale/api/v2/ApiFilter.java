@@ -43,7 +43,7 @@ public class ApiFilter implements Filter {
         String api_rate = getHeader(request, "X-App-Rate", "1");
         try {
             Api2 server = ApiFactory.createV2Api(app_id, provider_private_key);
-            AuthorizeResponse apiResponse = server.authorize(app_id, app_key, null, null);
+            AuthorizeResponse apiResponse = server.authorize(app_id, app_key, null, null,false);
 
             if (apiResponse.getAuthorized()) {
                 ApiUsageMetric hitsMetric = apiResponse.firstHitsMetric();

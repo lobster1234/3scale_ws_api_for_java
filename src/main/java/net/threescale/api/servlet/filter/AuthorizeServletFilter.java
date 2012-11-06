@@ -214,6 +214,8 @@ public class AuthorizeServletFilter implements Filter {
     public static final String INIT_PKEY_TS_USER_KEY_PARAM_NAME =  "ts_user_key_param_name";
     /** INIT-PARAM Key that specifies the HTTP Query Parameter that references the <i>Referrer</i> used for authentication, defaults to {@value} */
     public static final String INIT_PKEY_TS_REFERRER_PARAM_NAME =  "ts_referrer_param_name";
+    /** INIT-PARAM Key that specifies if the usage will be tracked. Defaults to {@value} */
+    public static final String INIT_TRACK_USAGE =  "ts_track_usage";
     /** Default name of the Header Attribute that contains the Application Id, value {@value}*/
     public static final String DEFAULT_TS_APP_ID_HEADER = "X-App-Id";
     /** Default name of the Header Attribute that contains the Application Id, value {@value}*/
@@ -230,7 +232,6 @@ public class AuthorizeServletFilter implements Filter {
     public static final String DEFAULT_TS_USER_KEY_QUERY = "user_key";
     /** Default name of the Query Parameter that contains the Referrer, value {@value}*/
     public static final String DEFAULT_TS_REFERRER_QUERY = "referrer";
-
 
     private static Class<? extends ApiFactory> factoryClass;
 
@@ -252,6 +253,8 @@ public class AuthorizeServletFilter implements Filter {
     private String tsAuthorizeResponse;
 
     private boolean tsAppMetricsOnHeader;
+    
+    private boolean tsTrackUsage;
 
     private FilterConfig config;
 
@@ -441,6 +444,11 @@ public class AuthorizeServletFilter implements Filter {
         tsAppMetricsOnHeader = Boolean.parseBoolean(Helper.processInitParam(config, INIT_PKEY_TS_APP_METRICS_ON_HEADER, DEFAULT_TS_APP_METRICS_ON_HEADER));
 
         tsProviderKey = Helper.processInitParam(config, INIT_PKEY_TS_PROVIDER_KEY, null);
+        
+        tsTrackUsage = Boolean.parseBoolean(Helper.processInitParam(config, INIT_TRACK_USAGE, null));
+        
+        context.log("Usage tracking enabled? " + tsTrackUsage);
+        
 
         if (tsProviderKey == null) {
             throw new ServletException("No provider key has been set for AuthorizeServeltFilter");
@@ -547,7 +555,7 @@ public class AuthorizeServletFilter implements Filter {
      * @throws ApiException
      */
     protected AuthorizeResponse authorizeForApp(final String appId, final String appKey, final String referrer) throws ApiException {
-        return this.getServer().authorize(appId, appKey, referrer, null);
+        return this.getServer().authorize(appId, appKey, referrer, null,tsTrackUsage);
     }
 
     /**
@@ -558,7 +566,7 @@ public class AuthorizeServletFilter implements Filter {
      * @throws ApiException
      */
     protected AuthorizeResponse authorizeForUser(final String userKey, final String referrer) throws ApiException {
-         return this.getServer().authorizeWithUserKey(userKey, referrer, null);
+         return this.getServer().authorizeWithUserKey(userKey, referrer, null,tsTrackUsage);
     }
 
     /**

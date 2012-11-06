@@ -39,7 +39,7 @@ public class Api2ImplTest extends CommonBase {
                 .thenReturn(new ApiHttpResponse(200, HAPPY_PATH_RESPONSE));
 
 
-        AuthorizeResponse response = server.authorize(APP_ID, APP_KEY, null, null);
+        AuthorizeResponse response = server.authorize(APP_ID, APP_KEY, null, null,false);
         assertEquals(true, response.getAuthorized());
         assertEquals("Basic", response.getPlan());
         assertEquals("", response.getReason());
@@ -66,7 +66,7 @@ public class Api2ImplTest extends CommonBase {
                 .thenReturn(new ApiHttpResponse(200, HAPPY_PATH_RESPONSE));
 
 
-        AuthorizeResponse response = server.authorizeWithUserKey(USER_KEY, null, null);
+        AuthorizeResponse response = server.authorizeWithUserKey(USER_KEY, null, null,false);
         assertEquals(true, response.getAuthorized());
         assertEquals("Basic", response.getPlan());
         assertEquals("", response.getReason());
@@ -94,7 +94,7 @@ public class Api2ImplTest extends CommonBase {
                 .thenReturn(new ApiHttpResponse(200, EXCEEDED_PATH_RESPONSE));
 
 
-        AuthorizeResponse response = server.authorize(APP_ID, APP_KEY, null, null);
+        AuthorizeResponse response = server.authorize(APP_ID, APP_KEY, null, null,false);
         assertEquals(false, response.getAuthorized());
         assertEquals("Pro", response.getPlan());
         assertEquals("Usage limits are exceeded", response.getReason());
@@ -123,7 +123,7 @@ public class Api2ImplTest extends CommonBase {
                 .thenReturn(new ApiHttpResponse(200, HAPPY_PATH_RESPONSE));
 
 
-        AuthorizeResponse response = server.authorize(APP_ID, APP_KEY, REFERRER, null);
+        AuthorizeResponse response = server.authorize(APP_ID, APP_KEY, REFERRER, null,false);
         assertEquals(true, response.getAuthorized());
         assertEquals("Basic", response.getPlan());
         assertEquals("", response.getReason());
@@ -143,7 +143,7 @@ public class Api2ImplTest extends CommonBase {
         usage.put("hits", "1");
         usage.put("transfer", "1024");
         
-        AuthorizeResponse response = server.authorize(APP_ID, APP_KEY, null, usage);
+        AuthorizeResponse response = server.authorize(APP_ID, APP_KEY, null, usage,false);
         assertNotNull(response);
      }
 
@@ -157,7 +157,7 @@ public class Api2ImplTest extends CommonBase {
                 .thenReturn(new ApiHttpResponse(404, APPLICATION_ID_ERROR_RESPONSE));
 
         try {
-            server.authorize(APP_ID, null, null, null);
+            server.authorize(APP_ID, null, null, null,false);
             fail("Should have thrown ApiException");
         } catch (ApiException e) {
             assertEquals("application_not_found", e.getErrorCode());
@@ -175,7 +175,7 @@ public class Api2ImplTest extends CommonBase {
                 .thenReturn(new ApiHttpResponse(403, PROVIDER_KEY_INVALID_ERROR_RESPONSE));
 
         try {
-            server.authorize(APP_ID, null, null, null);
+            server.authorize(APP_ID, null, null, null,false);
             fail("Should have thrown ApiException");
         } catch (ApiException e) {
             assertEquals("provider_key_invalid", e.getErrorCode());

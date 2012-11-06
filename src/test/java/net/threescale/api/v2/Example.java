@@ -59,7 +59,7 @@ public class Example {
     private void executeHappyPath(Api2 server) {
         try {
             //
-            AuthorizeResponse response = server.authorize(app_id, app_key, null, null);
+            AuthorizeResponse response = server.authorize(app_id, app_key, null, null,false);
             System.out.println("response: " + response.toString());
 
             // Check that caller has available resources
@@ -97,7 +97,7 @@ public class Example {
         Api2 server = ApiFactory.createV2Api(app_url,  provider_private_key);
 
         try {
-            AuthorizeResponse response = server.authorize(invalid_app_id, app_key, null, null);
+            AuthorizeResponse response = server.authorize(invalid_app_id, app_key, null, null,false);
             System.out.println("response" + response.toString());
         } catch (ApiException e) {
             System.out.println("ApiException: responseCode was: " + e.getErrorCode() +
@@ -109,7 +109,7 @@ public class Example {
         Api2 server = ApiFactory.createV2Api(app_url, invalid_provider_private_key);
 
         try {
-            AuthorizeResponse response = server.authorize(app_id, app_key, null, null);
+            AuthorizeResponse response = server.authorize(app_id, app_key, null, null,false);
             System.out.println("response" + response.toString());
         } catch (ApiException e) {
             System.out.println("ApiException: responseCode was: " + e.getErrorCode() +

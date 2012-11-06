@@ -46,6 +46,7 @@ public class AuthorizationInterceptor implements PreProcessInterceptor {
     private String ts_provider_key = null;
     private String ts_authorize_response = "authorize_response";
     private String ts_redirect_url = null;
+    private boolean ts_track_usage = false;
 
     private Api2 server;
 
@@ -89,7 +90,7 @@ public class AuthorizationInterceptor implements PreProcessInterceptor {
 
         if (api_id != null) {
             try {
-                AuthorizeResponse response = server.authorize(api_id, api_key, referrer, null);
+                AuthorizeResponse response = server.authorize(api_id, api_key, referrer, null,ts_track_usage);
                 if (response.getAuthorized()) {
                     context.log("Authorized ok for : " + api_id);
                     session.setAttribute(ts_authorize_response, response);
@@ -104,7 +105,7 @@ public class AuthorizationInterceptor implements PreProcessInterceptor {
             }
         } else if (user_key != null) {
             try {
-            AuthorizeResponse response = server.authorizeWithUserKey(user_key, referrer, null);
+            AuthorizeResponse response = server.authorizeWithUserKey(user_key, referrer, null,ts_track_usage);
             if (response.getAuthorized()) {
                 context.log("Authorized ok for : " + api_id);
                 session.setAttribute(ts_authorize_response, response);
@@ -155,6 +156,7 @@ public class AuthorizationInterceptor implements PreProcessInterceptor {
         ts_user_key = Helper.processInitParam(config, "ts_user_key_param_name", "user_key");
         ts_referrer = Helper.processInitParam(config, "ts_referrer_param_name", "referrer");
         ts_authorize_response = Helper.processInitParam(config, "ts_authorize_response_attr_name", "authorize_response");
+        ts_track_usage = Boolean.parseBoolean(Helper.processInitParam(config,"ts_track_usage",null));
     }
 
 

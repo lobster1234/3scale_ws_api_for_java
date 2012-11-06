@@ -55,7 +55,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorizeWithUserKey("23454321", null, null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorizeWithUserKey("23454321", null, null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_USER_KEY_HEADER, "23454321");
         this.request.setURI("/");
 
@@ -71,7 +71,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorize("23454321", null, null, null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorize("23454321", null, null, null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_APP_ID_HEADER, "23454321");
         this.request.setURI("/");
 
@@ -88,7 +88,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
         tester.getContext().getSessionHandler().addEventListener(sessionListener);
         tester.start();
 
-        when(tsServer.authorize("23454321", null, null, null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorize("23454321", null, null, null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_APP_ID_HEADER, "23454321");
         this.request.setURI("/");
 
@@ -104,7 +104,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorize("23454321", "3scale-3333", null, null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorize("23454321", "3scale-3333", null, null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_APP_ID_HEADER, "23454321");
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_APP_KEY_HEADER, "3scale-3333");
         this.request.setURI("/");
@@ -120,7 +120,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorize("23454321", "3scale-3333", "example.org", null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorize("23454321", "3scale-3333", "example.org", null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_APP_ID_HEADER, "23454321");
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_APP_KEY_HEADER, "3scale-3333");
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_REFERRER_HEADER, "example.org");
@@ -137,7 +137,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorize("54321", null, null, null)).thenThrow(new ApiException(INVALID_APP_ID_RESPONSE));
+        when(tsServer.authorize("54321", null, null, null,false)).thenThrow(new ApiException(INVALID_APP_ID_RESPONSE));
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_APP_ID_HEADER, "54321");
         this.request.setURI("/");
 
@@ -152,7 +152,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorize("54321", null, null, null)).thenThrow(new ApiException(INVALID_APP_ID_RESPONSE));
+        when(tsServer.authorize("54321", null, null, null,false)).thenThrow(new ApiException(INVALID_APP_ID_RESPONSE));
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_APP_ID_HEADER, "54321");
         this.request.setURI("/");
 
@@ -169,7 +169,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorize("23454321", null, null, null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorize("23454321", null, null, null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader("my_app_id", "23454321");
         this.request.setURI("/");
 
@@ -186,7 +186,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorize("23454321", "9876", null, null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorize("23454321", "9876", null, null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_APP_ID_HEADER, "23454321");
         this.request.setHeader("my_app_key", "9876");
         this.request.setURI("/");
@@ -205,7 +205,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
         tester.start();
 
 
-        when(tsServer.authorize("23454321", null, "example.org", null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorize("23454321", null, "example.org", null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_APP_ID_HEADER, "23454321");
         this.request.setHeader("X-My-Referrer", "example.org");
         this.request.setURI("/");
@@ -224,7 +224,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorizeWithUserKey("23454321", null, null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorizeWithUserKey("23454321", null, null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader("X-MyUser-Key", "23454321");
         this.request.setURI("/");
 
@@ -241,7 +241,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorize("23454321", null, null, null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorize("23454321", null, null, null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader( AuthorizeServletFilter.DEFAULT_TS_APP_ID_HEADER, "23454321");
         this.request.setURI("/");
 
@@ -274,7 +274,7 @@ public class AuthorizeServletFilterTest extends AuthorizationCommon {
 
         tester.start();
 
-        when(tsServer.authorizeWithUserKey("ABCD", null, null)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
+        when(tsServer.authorizeWithUserKey("ABCD", null, null,false)).thenReturn(new AuthorizeResponse(HAPPY_PATH_RESPONSE));
         this.request.setHeader(AuthorizeServletFilter.DEFAULT_TS_USER_KEY_HEADER, "23454321");
         this.request.setURI("/");
 

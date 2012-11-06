@@ -43,7 +43,7 @@ public class CacheTest extends CommonBase {
         when(cache.getAuthorizeFor(APP_ID, APP_KEY, null, null, null))
                 .thenReturn(null);
 
-        AuthorizeResponse authorizeResponse = server.authorize(APP_ID, APP_KEY, null, null);
+        AuthorizeResponse authorizeResponse = server.authorize(APP_ID, APP_KEY, null, null,false);
 
         verify(cache).getAuthorizeFor(APP_ID, APP_KEY, null, null, null);
         verify(cache).addAuthorizedResponse(APP_ID, authorizeResponse, APP_KEY, null, null, null);
